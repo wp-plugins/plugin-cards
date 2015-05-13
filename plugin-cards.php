@@ -10,7 +10,7 @@
  * Plugin Name: 		Plugin Cards
  * Plugin URI: 			https://wordpress.org/plugins/plugin-cards/
  * Description: 		Display plugin cards that match those introduced in WordPress 4.0. Uses the wordpress.org API and supports custom queries.
- * Version: 			1.0.0
+ * Version: 			1.1.0
  * Author:				Braad Martin
  * Author URI: 			http://braadmartin.com
  * License: 			GPL-2.0+
@@ -42,31 +42,17 @@ function pc_plugin_cards_load_translations() {
 	load_plugin_textdomain( 'plugin-cards', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
-add_action( 'init', 'pc_plugin_cards_load_bfa' );
-/**
- * Use the Better Font Awesome Library (for the star ratings).
- */
-require_once ( dirname( __FILE__ ) . '/lib/better-font-awesome-library/better-font-awesome-library.php' );
-function pc_plugin_cards_load_bfa() {
-
-	// Only if we're on the front end.
-	if ( ! is_admin() ) {
-
-	    // Initialize the Better Font Awesome Library.
-	    Better_Font_Awesome_Library::get_instance();
-	}
-}
-
 add_action( 'wp_enqueue_scripts', 'pc_plugin_cards_enqueue_scripts' );
 /**
- * Register our CSS.
+ * Register our CSS and include Dashicons as a dependency.
  */
 function pc_plugin_cards_enqueue_scripts() {
 
 	// Only on the front end.
 	if ( ! is_admin() ) {
 		wp_register_style( 'open-sans-google-font', '//fonts.googleapis.com/css?family=Open+Sans:400,600' );
-		wp_register_style( 'plugin-cards', plugins_url( '/css/plugin-cards.css', __FILE__ ) );
+		wp_register_style( 'plugin-cards-css', plugins_url( '/css/plugin-cards.css', __FILE__ ), array( 'dashicons' ), '1.1.0' );
+		wp_register_script( 'plugin-cards-js', plugins_url( '/js/plugin-cards.js', __FILE__ ), array( 'jquery' ), '1.1.0' );
 	}
 }
 
@@ -288,7 +274,8 @@ function pc_render_plugin_card( $plugin ) {
 
 		// Enqueue our CSS.
 		wp_enqueue_style( 'open-sans-google-font' );
-		wp_enqueue_style( 'plugin-cards' );
+		wp_enqueue_style( 'plugin-cards-css' );
+		wp_enqueue_script( 'plugin-cards-js' ); 
 
 		// Sometimes the Plugin URI hasn't been set, so let's fallback to building it manually.
 		$plugin_url = esc_url( $plugin->homepage );
@@ -383,47 +370,47 @@ function pc_render_plugin_card( $plugin ) {
 
 							// Star 1
 							if ( $rating >= 20 ) {
-								echo '<span class="star fa fa-star"></span>';
+								echo '<span class="star star-full"></span>';
 							} elseif ( $rating >= 10 ) {
-								echo '<span class="star fa fa-star-half-full"></span>';
+								echo '<span class="star star-half"></span>';
 							} else {
-								echo '<span class="star fa fa-star-o"></span>';
+								echo '<span class="star star-empty"></span>';
 							}
 
 							// Star 2
 							if ( $rating >= 40 ) {
-								echo '<span class="star fa fa-star"></span>';
+								echo '<span class="star star-full"></span>';
 							} elseif ( $rating >= 30 ) {
-								echo '<span class="star fa fa-star-half-full"></span>';
+								echo '<span class="star star-half"></span>';
 							} else {
-								echo '<span class="star fa fa-star-o"></span>';
+								echo '<span class="star star-empty"></span>';
 							}
 
 							// Star 3
 							if ( $rating >= 60 ) {
-								echo '<span class="star fa fa-star"></span>';
+								echo '<span class="star star-full"></span>';
 							} elseif ( $rating >= 50 ) {
-								echo '<span class="star fa fa-star-half-full"></span>';
+								echo '<span class="star star-half"></span>';
 							} else {
-								echo '<span class="star fa fa-star-o"></span>';
+								echo '<span class="star star-empty"></span>';
 							}
 
 							// Star 4
 							if ( $rating >= 80 ) {
-								echo '<span class="star fa fa-star"></span>';
+								echo '<span class="star star-full"></span>';
 							} elseif ( $rating >= 70 ) {
-								echo '<span class="star fa fa-star-half-full"></span>';
+								echo '<span class="star star-half"></span>';
 							} else {
-								echo '<span class="star fa fa-star-o"></span>';
+								echo '<span class="star star-empty"></span>';
 							}
 
 							// Star 5
 							if ( $rating >= 98 ) {
-								echo '<span class="star fa fa-star"></span>';
+								echo '<span class="star star-full"></span>';
 							} elseif ( $rating >= 90 ) {
-								echo '<span class="star fa fa-star-half-full"></span>';
+								echo '<span class="star star-half"></span>';
 							} else {
-								echo '<span class="star fa fa-star-o"></span>';
+								echo '<span class="star star-empty"></span>';
 							}
 							?>
 						</div>
