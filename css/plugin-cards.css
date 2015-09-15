@@ -42,7 +42,8 @@
 .plugin-cards .plugin-card-top {
 	position: relative;
 	padding: 20px 20px 10px;
-	min-height: 168px;
+	min-height: 138px;
+	box-sizing: content-box;
 }
 
 .plugin-cards div.action-links,
@@ -117,6 +118,7 @@
 
 .plugin-cards .plugin-action-buttons li {
 	margin-bottom: 10px;
+	list-style-type: none;
 }
 
 .plugin-cards .plugin-action-buttons .button {
